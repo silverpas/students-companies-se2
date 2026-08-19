@@ -1,0 +1,36 @@
+frame [UC18] Fill structured questionnaire
+
+participant "WebAPP" as web
+participant "API Gateway" as api
+participant "InternshipMonitoringManager" as mon
+participant "DataBase" as db
+#participant "Notification Service" as not
+
+autoactivation
+autonumber
+web->api:get(internship)
+  api->mon: get(internship)
+    mon->db: get(internship)
+    mon<--db: internship
+  api<--mon: internship
+web<--api: internship
+web->api: get(questionnaire)
+  api->mon: get(questionnaire)
+    mon->db: get(questionnaire)
+    mon<--db: questionnaire
+  api<--mon: questionnaire
+web<--api: questionnaire
+web->api: put(answers)
+  api->mon: put(answers)
+     mon->mon: check_form(request)
+     deactivateafter mon
+alt valid request
+     mon->db: insert(answers)
+     mon<--db: ok
+  api<--mon: ok
+web<--api: ok
+else invalid request
+   api<--mon: ko
+web<--api: ko
+end
+    

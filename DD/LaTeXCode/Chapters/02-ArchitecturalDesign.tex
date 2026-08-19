@@ -1,0 +1,644 @@
+\section{Overview}\label{subsec:overview}
+The Figure~\ref{fig:architecture-diagram} below provides a high-level representation of the System's architecture for the Students\&Companies (S\&C) platform. Following a \textbf{three-tier architecture}, the system ensures scalability, separation of concerns, and maintainability. It consists of:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{architecture_diagram}
+    \caption{High-level architecture of the Students\&Companies platform}
+    \label{fig:architecture-diagram}
+\end{figure}
+\noindent
+\textbf{Legend:}
+\begin{itemize}
+    \item \textcolor[HTML]{9370DB}{\textbf{\rule{1em}{1em}} User*}: Represents authenticated users such as Students, Companies, and Universities.
+    \item \textcolor[HTML]{3CB371}{\textbf{\rule{1em}{1em}} Business Tier}: Web Application Server responsible for processing logic and managing requests.
+    \item \textcolor[HTML]{3CB371}{\textbf{\rule{1em}{1em}} Presentation Tier}: Web Application interface accessible to users.
+    \item \textcolor[HTML]{4682B4}{\textbf{\rule{1em}{1em}} External Entities}: Third-party services such as Email Providers and Analysis Tools.
+    \item \textcolor[HTML]{DEB887}{\textbf{\rule{1em}{1em}} Data Tier}: Database responsible for securely storing platform data.
+\end{itemize}
+
+\subsubsection{Tiers Description}
+\paragraph{Presentation Tier (Users)}
+This tier is the interaction layer between the platform and its users. It provides the user interface, allowing users to access the functionalities corresponding to their roles:
+\begin{itemize}
+    \item \textbf{Web Application:} Accessible via a web browser, it allows Students, Companies and Universities to interact with the system by sending and receiving requests.
+\end{itemize}
+
+\paragraph{Business Tier}
+This tier contains the core application logic and serves as an intermediary between the Presentation Tier and Data Tier:
+\begin{itemize}
+    \item \textbf{Web Application Server:} Processes requests from the Web Application and performs operations such as:
+    \begin{itemize}
+        \item Matching students' CVs with internship opportunities using the Recommendation Engine.
+        \item Managing interviews, internships, and monitoring activities.
+        \item Sending notifications and handling complaints.
+        \item Communicating with external tools for data analysis.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Data Tier}
+The Data Tier securely stores and manages all platform data:
+\begin{itemize}
+    \item \textbf{Database:} Responsible for the storage of user data, internship details, feedback, complaints, and recommendation results.
+\end{itemize}
+
+\subsubsection{External Entities}
+The system interacts with the following third-party tools:
+\begin{itemize}
+    \item \textbf{Email Provider:} An SMTP service for sending notifications to users about interviews and matches.
+    \item \textbf{Analysis Tool:} Provides statistical analysis for internships and user activities to optimize recommendations.
+\end{itemize}
+
+\subsubsection{System Interaction Flow}
+The interaction flow across the three tiers works as follows:
+\begin{enumerate}
+    \item Users (Students, Companies, Universities) interact with the \textbf{Web Application} via a web browser.
+    \item The Web Application sends user requests to the \textbf{Web Application Server}.
+    \item The Web Server processes requests, retrieves or updates data from the \textbf{Database}, and communicates with external tools.
+    \item Responses are sent back to the Web Application, where they are displayed to the user.
+    \item External entities like the Email Provider are triggered when notifications need to be sent.
+\end{enumerate}
+
+\section{Component view}\label{subsec:component-view}
+\subsubsection{Component Diagram Description}
+The Figure~\ref{fig:component-diagram} below represents the high-level \textbf{Component Diagram} of the Students\&Companies (S\&C) platform. It describes the system's structure by showing the components, their relationships, and the exposed interfaces. This diagram reflects the responsibilities of each component and highlights the interactions between the \textbf{Presentation Layer}, \textbf{Application Layer}, and \textbf{Data Layer}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{component_diagram}
+    \caption{Component Diagram of the Students\&Companies platform}
+    \label{fig:component-diagram}
+\end{figure}
+
+\subsubsection{Components and Responsibilities}
+\begin{itemize}
+    \item \textbf{WebAPP (Presentation Tier):}
+    The user interface accessible through a web browser, allowing users to interact with the system. It sends requests to the \textbf{Application Layer} components via the \textbf{API Gateway}.
+
+    \item \textbf{API Gateway:}
+    The entry point for all requests coming from the Web Application. It exposes several interfaces to handle user interactions:
+    \begin{itemize}
+        \item \textbf{AuthInterface:} Manages authentication requests for login and signup.
+        \item \textbf{StudentInternshipInterface:} Handles operations for students, such as uploading CVs and viewing internship opportunities.
+        \item \textbf{CompanyInternshipInterface:} Allows companies to post internship positions and manage applications.
+        \item \textbf{FeedbackInterface:} Supports submission and retrieval of feedback from students and companies.
+        \item \textbf{MonitorInterface:} Allows universities to monitor internships and address complaints.
+        \item \textbf{RecommendationInterface:} Provides internship recommendations based on user data.
+    \end{itemize}
+
+    \item \textbf{NotificationService:}
+    A service responsible for sending notifications (e.g., emails) to users about matches, interviews, or feedback requests.
+
+    \item \textbf{AuthenticationService:}
+    Manages the authentication and authorization processes for all users.
+
+    \item \textbf{StudentInternshipManager:}
+    Handles student-specific operations such as:
+    \begin{itemize}
+        \item Uploading CVs.
+        \item Managing student applications for internships.
+        \item Requesting recommendations via the \textbf{RecommendationEngine}.
+    \end{itemize}
+
+    \item \textbf{CompanyInternshipManager:}
+    Manages company-side operations, such as posting internship opportunities and processing student applications.
+
+    \item \textbf{RecommendationEngine:}
+    Provides intelligent recommendations by analyzing data from students’ CVs and company internship postings.
+
+    \item \textbf{FeedbackManager:}
+    Collects and processes feedback provided by users (students, companies, and universities).
+
+    \item \textbf{InternshipsMonitoringManager:}
+    Responsible for monitoring internships and processing complaints or suggestions submitted by users.
+
+    \item \textbf{DataBase (Data Tier):}
+    The central storage system for all platform data, including:
+    \begin{itemize}
+        \item User profiles (students, companies, universities).
+        \item Uploaded CVs and internship details.
+        \item Feedback and complaint records.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Interactions Between Components}
+The interactions between the components and their interfaces are as follows:
+\begin{itemize}
+    \item The \textbf{WebAPP} interacts with the \textbf{API Gateway} to send user requests. The gateway routes these requests to the appropriate interfaces.
+    \item The \textbf{AuthInterface} communicates with the \textbf{AuthenticationService} to verify user credentials.
+    \item The \textbf{StudentInternshipInterface} connects to the \textbf{StudentInternshipManager}, which processes student requests such as uploading CVs and viewing recommended internships.
+    \item The \textbf{CompanyInternshipInterface} communicates with the \textbf{CompanyInternshipManager} for operations related to internship postings and managing applications.
+    \item The \textbf{RecommendationInterface} interacts with the \textbf{RecommendationEngine} to fetch and provide internship suggestions.
+    \item The \textbf{FeedbackInterface} sends feedback requests to the \textbf{FeedbackManager}, which processes the collected information.
+    \item The \textbf{MonitorInterface} communicates with the \textbf{InternshipsMonitoringManager} to monitor internships and handle complaints.
+    \item The \textbf{NotificationService} sends email notifications to users based on events triggered by other components.
+    \item All data operations (e.g., storing CVs, retrieving internships, saving feedback) are performed by the \textbf{DataBase}, which is accessed exclusively by the Application Layer components.
+\end{itemize}
+
+\section{Deployment view}\label{subsec:deployment-view}
+    A user access the S\&C web application through a browser, via pc or smartphone. 
+
+    A dedicated firewall running pfSense on a Netgate 1537 router filters all the maliciuos request.
+    
+    All the other components are running on different ThinkSystem SR250 which is a middle level server, except for the database which runs on a ThinkSystem SR630 for more processing power.
+    The OS is Red Hat Enterprise Linux which has extensive support. All the servers have the same OS for both maintainability and compatibility.
+
+    The requests that arrive from the firewall are forwarded to a reverse proxing which responds immediately with static content and forwards the other requests to the kubernet's master.
+    All the network traffic from this point run in a private lan and is no more encrypted, to increase network speed.
+
+    The web application is running in two different workers, each running multiple istances of the application as needed. The master acts as a load balancer and scales up and down as needed.
+
+    Finally the database manages the connection coming from the different istances of the application with a thread pool, increasing speed and efficiency.
+    \begin{figure}[H]
+        \includegraphics[width=\textwidth]{deployment/deployment_colored.png}
+        \caption{Deployment diagram}
+        \label{deployment_diagram}
+    \end{figure}
+
+\section{Runtime View}\label{subsec:runtime-view}
+The AuthenticationService component has the important role of checking the validity of all the requests, verifying that the user has an active session and has permissions to view the requested content or perform the requested action. For simplicity the use cases sequence diagrams omit the verification step. The following diagram shows an example of interaction.
+\begin{figure}[H]
+    \includegraphics[width=0.9\textwidth]{sequence_diagrams/png_files/Authentication Control.png}
+    \caption{AuthenticationService interaction example}
+    \label{fig:AuthenticationService}
+\end{figure}
+
+\subsubsection{UC01 - Register}
+This use case allows a user to register on the platform. The user fills out personal information, agrees to the terms and conditions,
+and submits the registration form. The system validates the data, stores it in the database, and sends a confirmation email.
+The process is completed when the user clicks the confirmation link in their email.
+
+Exceptions include:
+\begin{itemize}
+    \item Missing required fields.
+    \item Invalid email or password format.
+    \item Errors while saving data or sending a confirmation email.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{UC01}
+    \caption{Use case 1: ”Register” - Sequence Diagram}
+    \label{fig:UC01}
+\end{figure}
+
+\subsubsection{UC02 - Login}
+This use case handles user login. The user enters their email and password, which are validated by the system. If the credentials are correct, the user is logged in; otherwise, appropriate errors are displayed.
+
+Exceptions include:
+\begin{itemize}
+    \item Missing required fields.
+    \item Invalid credentials.
+    \item Errors during credential verification.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{UC02}
+    \caption{Use case 2: ”Login” - Sequence Diagram}
+    \label{fig:UC02}
+\end{figure}
+
+\subsubsection{UC03 - Publish Internship}
+This use case allows companies to publish internship offers by providing details such as position, skills, tools, benefits, and a description.
+The system validates the data, stores it in the database, and sends notifications to students recommended by the analysis tool.
+
+Exceptions include:
+\begin{itemize}
+    \item Missing required fields.
+    \item Errors while saving internship data.
+    \item Errors during recommendation or notification processes.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{UC03}
+    \caption{Use case 3: ”Publish Internship” - Sequence Diagram}
+    \label{fig:UC03}
+\end{figure}
+
+\subsubsection{UC04 - View Recommended Students}
+This use case enables companies to view students recommended for internships.
+The system retrieves recommendations based on internship details and allows filtering or viewing detailed information about students.
+
+Exceptions include:
+\begin{itemize}
+    \item Errors while generating recommendations.
+    \item No students found for recommendations.
+    \item Errors while retrieving or filtering student details.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{UC04}
+    \caption{Use case 4: ”View Recommended Students” - Sequence Diagram}
+    \label{fig:UC04}
+\end{figure}
+
+
+\subsubsection{UC05 - Offer an Interview}
+This use case allows companies to offer an interview to a selected student.
+The system validates the offer details, stores them, and sends a notification to the student.
+
+Exceptions include:
+\begin{itemize}
+    \item Missing required fields.
+    \item Errors during data validation.
+    \item Errors while sending notifications.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{UC05}
+    \caption{Use case 5: ”Offer an Interview” - Sequence Diagram}
+    \label{fig:UC05}
+\end{figure}
+
+\subsubsection{UC06 - Setup Interview}
+This use case enables companies to schedule an interview by specifying the date, time, and questions.
+The system validates the data, saves it, and notifies the selected student.
+
+Exceptions include:
+\begin{itemize}
+    \item Missing required fields.
+    \item Errors during data validation or saving.
+    \item Errors while sending notifications.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{UC06}
+    \caption{Use case 6: ”Setup Interview” - Sequence Diagram}
+    \label{fig:UC06}
+\end{figure}
+
+
+\subsubsection{UC07 - Conduct Interview}
+This use case allows companies to conduct interviews by assigning scores for technical, personal, and company fit.
+Additional notes can be added, and the system validates and saves the results.
+
+Exceptions include:
+\begin{itemize}
+    \item Missing required fields.
+    \item Errors during data validation or saving.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{UC07}
+    \caption{Use case 7: ”Conduct Interview” - Sequence Diagram}
+    \label{fig:UC07}
+\end{figure}
+
+
+\subsubsection{UC08 - Finalize Selection}
+This use case lets companies finalize a candidate for an internship.
+The system retrieves evaluation data, validates the selection, notifies the selected candidate, and closes the internship position.
+
+Exceptions include:
+\begin{itemize}
+    \item Errors while retrieving candidate details or finalizing selection.
+    \item Errors during notification or internship closure.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{UC08}
+    \caption{Use case 8: ”Finalize Selection” - Sequence Diagram}
+    \label{fig:UC08}
+\end{figure}
+
+
+\subsubsection{UC09 - Provide Feedback and Suggestion}
+This use case allows users to submit feedback and suggestions, along with a star rating.
+The system validates and processes the data, sending it to the analysis tool.
+
+Exceptions include:
+\begin{itemize}
+    \item Missing required fields.
+    \item Errors during feedback validation or processing.
+    \item Errors while feeding data to the analysis tool.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{UC09}
+    \caption{Use case 9: ”Provide Feedback and Suggestions” - Sequence Diagram}
+    \label{fig:UC09}
+\end{figure}
+
+\subsubsection{UC10 - Complain}
+This use case allows users to submit complaints about internships.
+The system validates the complaint, stores it, and notifies the relevant university.
+
+Exceptions include:
+\begin{itemize}
+    \item Missing required fields.
+    \item Errors during complaint validation or saving.
+    \item Errors while notifying the university.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{UC10}
+    \caption{Use case 10: ”Complain” - Sequence Diagram}
+    \label{fig:UC10}
+\end{figure}
+
+
+\subsubsection{UC11 - View planned interviews}
+    The planned interviews for a specific user are fetched from the database and visualized in the WebAPP. 
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{sequence_diagrams/png_files/UC11 View planned interviews.png}
+        \caption{Use case 11: ”View planned interview” - Sequence Diagram}
+        \label{fig:UC11}
+    \end{figure}
+
+
+\subsubsection{UC12 - Consider offer/application}
+    When the user select a notification offer he can accept or decline the offer. In either cases a notification is sent to all the involed users.
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{sequence_diagrams/png_files/UC12 Consider offerapplication.png}
+        \caption{Use case 12: ”Consider offer/application” - Sequence Diagram}
+        \label{fig:UC12}
+    \end{figure}
+
+
+\subsubsection{UC13 - Upload CV}
+    A user visualize his profile page and uploads a new curriculum. The curriculum is forwarded to the RecommendationEngine, that searches for possible internship to recommend. 
+    Some suggestions from the AnalysisTool are returned to the user to improve his curriculum.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{sequence_diagrams/png_files/UC13 Upload CV.png}
+        \caption{Use case 13: ”Upload CV” - Sequence Diagram}
+        \label{fig:UC13}
+    \end{figure}
+
+
+\subsubsection{UC14 - View available internships}
+    The students visualize some internship thar are filtered based on the user settings, like location or topic.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{sequence_diagrams/png_files/UC14 View available internships.png}
+        \caption{Use case 14: ”View available internships” - Sequence Diagram}
+        \label{fig:UC14}
+    \end{figure}
+
+
+\subsubsection{UC15 - View recommended internships}
+    The recommended internship, generated from the AnalysisTool and saved in the database, are visualized in the student WebAPP.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{sequence_diagrams/png_files/UC15 View recommended internships.png}
+        \caption{Use case 15: ”View recommended internships” - Sequence Diagram}
+        \label{fig:UC15}
+    \end{figure}
+
+
+\subsubsection{UC16 - Search for internship}
+    The user searches for internship filtered by company or position.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{sequence_diagrams/png_files/UC16 Search for internship.png}
+        \caption{Use case 16: ”Search for internship” - Sequence Diagram}
+        \label{fig:UC16}
+    \end{figure}
+
+
+\subsubsection{UC17 - Apply for internship}
+    The student navigates to the internship page, sends a request to apply. The company is notified.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{sequence_diagrams/png_files/UC17 Apply for internship.png}
+        \caption{Use case 17: ”Apply for internship” - Sequence Diagram}
+        \label{fig:UC17}
+    \end{figure}
+
+
+\subsubsection{UC18 - Fill structured questionnaire}
+    After the student has filled and submitted the questionnaire, hte InternshipsMonitoringManager verifies the correctness of the form and saves it.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{sequence_diagrams/png_files/UC18 Fill structured questionnaire.png}
+        \caption{Use case 18: ”Fill structured questionnaire” - Sequence Diagram}
+        \label{fig:UC18}
+    \end{figure}
+
+
+\subsubsection{UC19 - View Complaints}
+    The university views the complaints of its students, and optionally can respond to them.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{sequence_diagrams/png_files/UC19 View Complaints.png}
+        \caption{Use case 19: ”View Complaints” - Sequence Diagram}
+        \label{fig:UC19}
+    \end{figure}
+
+
+\subsubsection{UC20 - Terminate Internship}
+    A university can terminate an internship by compiling a form. If the form is validated correctly the internship is terminated and both the company and the student are notified.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{sequence_diagrams/png_files/UC20 Terminate Internship.png}
+        \caption{Use case 20: ”Terminate Internship” - Sequence Diagram}
+        \label{fig:UC20}
+    \end{figure}
+
+
+\section{Component Interfaces:}\label{subsec:component-interfaces:}
+\subsubsection{API Gateway}
+\begin{itemize}
+    \item \textbf{putNewCredential(registerData)}: Used to register new user credentials.
+    \item \textbf{putCredentials(loginCredentials)}: Used to verify login credentials.
+    \item \textbf{putConfirmation(confirmed\_user)}: Confirms a user's registration.
+    \item \textbf{putNewInternship(position, skills, tools, benefits, description)}: Saves a new internship posting.
+    \item \textbf{putInterviewScores(technicalScore, personalScore, companyFitScore)}: Submits interview evaluation scores.
+    \item \textbf{putFeedback(feedback, suggestions, rating)}: Submits user feedback and ratings.
+    \item \textbf{putInterviewInformation(date, time, candidate, notes, questions)}: Adds details of a new interview.
+    \item \textbf{getInternship(internshipID)}: Retrieves details of a specific internship.
+    \item \textbf{getProfile(userId)}: Retrieves user profile information.
+    \item \textbf{get(searchCriteria)}: Filters and retrieves results based on search criteria.
+    \item \textbf{getRegistrationPage(registrationPage)}: Displays the registration page.
+    \item \textbf{getLoginPage(LoginPage)}: Displays the login page.
+    \item \textbf{getInternships(UserID)}: Retrieves internships associated with a user.
+    \item \textbf{deleteInternship(internshipId)}: Deletes a specific internship.
+    \item \textbf{complaintResponse(complaintId, message)}: Sends a response to a complaint.
+    \item \textbf{addQuestionnaireAnswers(answers)}: Submits questionnaire answers.
+    \item \textbf{applyForInternship(internshipId, userId)}: Applies a user to a specific internship.
+    \item \textbf{getCompany(companyId)}: Retrieves company details.
+    \item \textbf{displayInternshipList(internshipList)}: Displays a list of internships.
+    \item \textbf{displayCandidatesDetails(candidateDetails)}: Displays candidate information for selection.
+    \item \textbf{getRecommendedInternships(userId)}: Retrieves a list of recommended internships.
+    \item \textbf{getAvailableInternships(userId)}: Retrieves a list of available internships for a user.
+    \item \textbf{uploadCV(curriculum)}: Uploads a student's CV.
+    \item \textbf{getConfirmationPage(internshipId)}: Displays the confirmation page for an internship application.
+    \item \textbf{confirmApply(internshipId)}: Confirms an application for an internship.
+    \item \textbf{put(offerForm)}: Submits an internship offer form.
+    \item \textbf{put(complaint)}: Submits a user complaint.
+    \item \textbf{put(candidateID, internshipID)}: Links a candidate to a specific internship.
+    \item \textbf{getInterviews(userId)}: Retrieves details of planned interviews for the user
+\end{itemize}
+
+\subsubsection{InternshipsMonitoringManager}
+\begin{itemize}
+    \item \textbf{getInternships(userID)}: Retrieves internships associated with a user.
+    \item \textbf{validateComplaintForm(complaintData)}: Validates a complaint form.
+    \item \textbf{createComplaint(complaintData)}: Creates a new complaint.
+    \item \textbf{sendComplaintNotification(university, complaintData)}: Sends a notification to a university about a complaint.
+    \item \textbf{getInternship(internshipId)}: Retrieves the specific internship.
+    \item \textbf{getAvailableInternships(userId)}: Retrieves the available internships for the user.
+    \item \textbf{getRecommendedInternships(userId)}: Retrieves the recommended internships for the user.
+    \item \textbf{getCompany(companyId)}: Retrieves information about the company.
+    \item \textbf{applyForInternship(internshipId, userId)}: Issues a request for the internship.
+    \item \textbf{addQuestionnaireAnswers(answers)}: Adds the given answers to the questionnaire.
+    \item \textbf{complaintResponse(complaintId, message)}: Adds the response to the complaint.
+    \item \textbf{deleteInternship(internshipId)}: Removes the selected internship.
+\end{itemize}
+
+\subsubsection{AuthenticationService}
+\begin{itemize}
+    \item \textbf{validate(new\_user)}: Validates the registration data of a new user.
+    \item \textbf{validate(login\_credentials)}: Validates login credentials.
+    \item \textbf{check\_credentials(new\_user)}: Verifies the credentials of a new user.
+    \item \textbf{check\_credentials(confirmed\_user)}: Verifies the credentials of a confirmed user.
+    \item \textbf{check\_credentials(email, password)}: Verifies the credentials based on email and password.
+    \item \textbf{getInterviews(userId)}: Retrieves the interviews for the user.
+    \item \textbf{getConfirmationPage(internshipId)}: Retrieves information for the internship.
+    \item \textbf{putConfirmation(userId)}: Insert a confirmation for the user.
+    \item \textbf{getProfile(userId)}: Retrieves information about the user.
+    \item \textbf{uploadCV(cv)}: Insert the new curriculum.
+\end{itemize}
+
+\subsubsection{StudentInternshipManager}
+\begin{itemize}
+    \item \textbf{getSortedCandidates(internshipID)}: Retrieves a list of candidates sorted by evaluation.
+    \item \textbf{sendCandidateNotification(studentID)}: Sends a notification to a specific student.
+    \item \textbf{getStudentDetails(studentID)}: Retrieves details about a specific student.
+\end{itemize}
+
+\subsubsection{CompanyInternshipManager}
+\begin{itemize}
+    \item \textbf{put(InternshipData)}: Saves data about a new or updated internship.
+    \item \textbf{sendInterviewNotification(interviewData)}: Sends notifications about scheduled interviews.
+    \item \textbf{sendNotification(studentId, offerData)}: Sends a notification about an internship offer.
+    \item \textbf{sendNotification(studentId, interviewData)}: Sends a notification about interview details.
+    \item \textbf{sendInterviewOfferData(offerData)}: Submits data for an interview offer.
+    \item \textbf{save(InterviewData)}: Saves interview information.
+    \item \textbf{finalizeInterview(interviewData)}: Finalizes details of an interview.
+    \item \textbf{validateInterviewForm(interviewData)}: Validates interview form data.
+    \item \textbf{validateNotes(notes)}: Validates notes associated with an interview.
+    \item \textbf{validateForm(offerData)}: Validates the form for an internship offer.
+    \item \textbf{createInterview(interviewData)}: Creates a new interview entry.
+    \item \textbf{closeInternshipPosition(internshipID)}: Closes an internship position.
+    \item \textbf{updateInternshipStatus(internshipID, msg)}: Updates the status of an internship.
+    \item \textbf{finalizeCandidateSelection(candidateID, internshipID)}: Finalizes the selection of a candidate.
+\end{itemize}
+
+\subsubsection{RecommendationEngine}
+\begin{itemize}
+    \item \textbf{computeRecommendations(internshipID)}: Computes recommendations for an internship.
+    \item \textbf{get(InternshipID)}: Retrieves details about an internship.
+    \item \textbf{analyzeCV(cv)}: Request an analysis for the curriculum.
+\end{itemize}
+
+\subsubsection{FeedbackManager}
+\begin{itemize}
+    \item \textbf{validateFeedbackForm(feedbackData)}: Validates feedback data provided by users.
+\end{itemize}
+
+\subsubsection{Notification Service}
+\begin{itemize}
+    \item \textbf{sendCandidateNotification(candidateID)}: Sends notifications to candidates.
+    \item \textbf{sendNotification(candidateID, msg)}: Sends a notification to a candidate with a message.
+    \item \textbf{sendNotification(email, message)}: Sends email notifications.
+\end{itemize}
+
+\subsubsection{Database}
+\begin{itemize}
+    \item \textbf{saveRegistrationData(data)}: Stores user registration data.
+    \item \textbf{saveComplaint(data)}: Saves complaint data.
+    \item \textbf{saveFeedback(data)}: Saves user feedback.
+    \item \textbf{saveInternship(data)}: Stores internship-related data.
+    \item \textbf{insert(confirmed:user)}: Inserts data of a confirmed user.
+    \item \textbf{updateInternshipStatus(internshipID, msg)}: Updates the status of an internship.
+    \item \textbf{getInterviews(userId)}: Retrieves details of planned interviews for a user.
+    \item \textbf{getConfirmationPage(internshipId)}: Retrieves details about a specific internship.
+    \item \textbf{putConfirmation(userId)}: Saves the confirmation status for the user.
+    \item \textbf{getProfile(userId)}: Retrieves details about the user.
+    \item \textbf{uploadCV(cv)}: Saves the new curriculum.
+    \item \textbf{getAvailableInternships(userId)}: Retrieves the available internships for the user.
+    \item \textbf{getRecommendedInternships(userId)}: Retrieves the recommended internships for the user.
+    \item \textbf{getCompany(companyId)}: Retrieves information about the company.
+    \item \textbf{getInternship(internshipId)}: Retrieves information about the internship.
+    \item \textbf{applyForInternship(internshipId, userId)}: Insert a request for the internship.
+    \item \textbf{addQuestionnaireAnswers(answers)}: Insert the answers for the questionnaire.
+    \item \textbf{addComplaintResponse(complaintId, message)}: Insert the response.
+    \item \textbf{deleteInternship(internshipId)}: Removes the selected internship.
+\end{itemize}
+
+\subsubsection{AnalysisTool}
+\begin{itemize}
+    \item \textbf{feedFeedbackData(feedbackData)}: Feeds feedback data into the analysis tool for processing.
+    \item \textbf{analyzeCV(cv)}: Analyze and creates suggestions for the curriculum.
+\end{itemize}
+
+
+%todo Davide
+\section{Selected architectural styles and patterns}
+    \subsection{Three tier architecture}
+
+        The Students\&Companies (S\&C) platform adopts a three-tier architecture to ensure separation of concerns, scalability, and maintainability. This design divides the system into three layers:
+
+        \begin{itemize}
+            \item \textbf{Presentation Tier}: This layer provides an intuitive web interface for users (students, companies, universities) via standard browsers. Built as a responsive web application, it ensures accessibility across devices and platforms.
+            \item \textbf{Business Tier}: Responsible for application logic, the business tier manages requests, processes operations such as internship matching or feedback handling, and interfaces with the data tier. The tier is implemented using a RESTful APIs to streamline communication and facilitate integration with third-party tools like statistical analysis or email notifications.
+            \item \textbf{Data Tier}: This layer securely stores and manages structured data. Leveraging a relational database, it efficiently handles user profiles, internship details, and system logs. Optimizations like indexing and caching ensure high-performance queries.
+        \end{itemize}
+
+    \subsection{RESTful Architecture}
+
+        The system extensively employs the REST (Representational State Transfer) architectural style. REST APIs allow standardized communication between the Presentation and Business tiers. This approach simplifies system integration, enables scalability, and supports a decoupled architecture. By adhering to HTTP methods (GET, POST, PUT, DELETE) and stateless interactions, REST APIs provide flexibility in expanding future functionalities.
+        
+    \subsection{Thread Pool Pattern}
+
+        The system uses the Thread Pool pattern for managing concurrent database connections efficiently. This pattern ensures that database resources are not overwhelmed during peak loads and optimizes response times for high-concurrency operations like user searches or recommendation queries.
+
+
+\section{Other design decisions}
+    \subsection{High Availability and Load Balancing}
+
+        The system ensures high availability and efficient resource utilization by focusing on replication at the application layer rather than the database. The key strategies employed are:
+
+        \begin{itemize}
+            \item \textbf{Worker Node Replication}: The business tier runs on two replicated Kubernetes worker nodes. Each worker hosts multiple instances of the web application, allowing the system to handle high traffic volumes and distribute requests effectively.
+            \item \textbf{Load Balancing}: A load balancer is integrated to distribute incoming traffic across the replicated instances. This approach prevents bottlenecks, improves response times, and ensures that no single instance is overwhelmed.
+            \item \textbf{Dynamic Scaling}: The Kubernetes master node actively monitors system load and adjusts the number of application instances on the worker nodes as needed, ensuring optimal resource allocation and uninterrupted service delivery during traffic spikes.
+            \item \textbf{Failover Capability}: If one worker node becomes unavailable, the remaining node continues to serve requests seamlessly, ensuring minimal disruption to users.
+        \end{itemize}
+
+        This architecture prioritizes reliability and responsiveness by focusing on redundancy and distribution at the application layer.
+
+    \subsection{Data Storage}
+
+        Data is managed in a dedicated ThinkSystem SR630 server, designed to handle the demands of a high-traffic system:
+
+        \begin{itemize}
+            \item \textbf{Relational Database}: The database supports complex queries and ensures ACID compliance for transactional integrity.
+            \item \textbf{Caching}: Frequently accessed data, like recommended internships, is cached to reduce query loads and improve response times.
+            \item \textbf{Thread Pooling}: Connection pooling ensures efficient management of concurrent database requests, reducing latency under heavy load.
+        \end{itemize}
+
+    \subsection{Security}
+
+        The architecture incorporates multiple layers of security to protect sensitive data:
+
+        \begin{itemize}
+            \item \textbf{Encryption}: External communication is encrypted using HTTPS to safeguard user data during transit.
+            \item \textbf{Firewall}: A dedicated pfSense firewall filters malicious traffic, adding a robust perimeter defense.
+            \item \textbf{Authentication and Authorization}: The AuthenticationService enforces role-based access control (RBAC), ensuring that users can only access functionalities aligned with their roles (student, company, or university).
+            \item \textbf{Internal Network Security}: Within the private LAN, traffic runs unencrypted to optimize speed while being isolated from external threats. This adheres to the principle of securing the system at its boundaries.       
+        \end{itemize}

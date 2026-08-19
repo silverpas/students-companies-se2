@@ -1,0 +1,44 @@
+entryspacing 1.0
+frame [UC19] View Complaints
+# the authentication service verify the validy of the request
+
+# implicit in every other diagram
+
+participant "WebAPP" as web
+participant "API Gateway" as api
+participant "InternshipMonitoringManager" as mon
+participant "DataBase" as db
+participant "NotificationService" as not
+
+autoactivation on
+autonumber on
+# view the internship
+web->api:getInternship(internshipId)
+  api->mon: getInternship(internshipId)
+    mon->db: getInternship(internshipId)
+    mon<--db: internship
+  api<--mon: internship
+web<--api: internship
+opt respond to complaints
+web->api: complaintResponse(complaintId, message)
+  api->mon: complaintResponse(complaintId, message)
+    mon->mon: checkComplaint(request)
+    deactivateafter mon
+    alt valid request
+        mon->db: addComplaintResponse(complaintId, message)
+        mon<--db: ok
+        mon->not: sendNotification(user, message)
+        alt notification success
+              mon<--not: ok
+            api<--mon: ok
+          web<--api: ok
+        else notification error
+              mon<--not: ko
+            api<--mon: ko
+          web<--api: ko
+        end
+   else invalid request
+      api<--mon: ko
+    web<--api: ko
+   end
+end

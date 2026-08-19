@@ -1,0 +1,27 @@
+frame Authentication Control
+# the authentication service verify the validy of the request
+
+# implicit in every other diagram
+
+participant "WebAPP" as web
+participant "API Gateway" as api
+participant "AuthenticationService" as auth
+participant "InternshipMonitoringManager" as mon
+participant "DataBase" as db
+
+autoactivation on
+autonumber on
+# view the internship
+web->api: getInternship(internshipId)
+api->auth: checkPermission(request)
+alt valid request
+api<--auth: ok
+api->mon: getInternship(internshipId)
+mon->db: getInternship(internshipId)
+mon<--db: internship
+api<--mon: internship
+web<--api: internship
+else invalid request
+api<--auth: ko
+web<--api: ko
+end

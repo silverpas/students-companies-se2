@@ -1,0 +1,27 @@
+frame [UC12] Consider offer/application
+
+participant "WebAPP" as web
+participant "API Gateway" as api
+participant "AuthenticationService" as mon
+participant "DataBase" as db
+#participant "AnalysisTool" as anal
+#articipant "RecommendationService" as rec
+participant "NotificationService" as not
+
+autoactivation
+autonumber
+web->api: getConfirmationPage(internshipId)
+  api->mon: getConfirmationPage(internshipId)
+    mon->db: getConfirmationPage(internshipId)
+    mon<--db: confirmation
+  api<--mon: confirmation
+web<--api: confirmation
+
+web->api: putConfirmation(userId)
+  api->mon:  putConfirmation(userId)
+    mon->db:  putConfirmation(userId)
+    mon<--db: ok
+    mon->not: sendNotification(user, internship)
+    mon<--not: ok
+  api<--mon: ok
+web<--api: ok

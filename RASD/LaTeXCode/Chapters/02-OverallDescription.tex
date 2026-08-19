@@ -1,0 +1,325 @@
+\section{Product perspectives}\label{sec:product-perspectives}
+
+\subsection{Scenarios}\label{subsec:scenarios}
+Below is a set of scenarios illustrating the interactions between the various types of users on the Students\&Companies platform.
+
+\subsection*{Scenario 1: Andrea, the proactive student}
+Andrea is a university student looking for an internship to enhance his programming skills.
+He registers on the platform, uploads his CV, and specifies his areas of interest.
+The system processes his profile and recommends several internship opportunities.
+Andrea finds an internship in a software startup, applies for it directly on the platform, and later gets selected for an interview.
+
+\subsection*{Scenario 2: Martina, the busy student}
+Martina is a final-year student who has little time to search for internships manually.
+She checks the updates from the platform about an internship that matches her profile and skills.
+After reviewing the details, she updates her CV based on system suggestions and applies for the position.
+
+\subsection*{Scenario 3: Marco, the diligent HR manager}
+Marco is the HR manager of a tech company.
+He logs into the platform to publish an internship listing, detailing the tasks, required skills, and technologies involved.
+After receiving applications, he uses the system's filtering tools to shortlist candidates and schedules interviews.
+
+\subsection*{Scenario 4: Giulia, the motivated intern}
+Giulia is currently participating in an internship obtained through the platform.
+She uses the platform to update her progress regularly and provides feedback on her experience.
+
+\subsection*{Scenario 5: Alessio, the tech-savvy student}
+Alessio is an engineering student specializing in machine learning.
+He filters internship listings by required technologies (e.g., Python, AI) and applies to those that align with his skills.
+Thanks to the platform, he quickly receives responses and schedules interviews.
+
+\subsection*{Scenario 6: Silvia, the demanding HR manager}
+Silvia is the HR manager of a multinational company.
+She uses the platform to analyze the CVs of students applying for a new internship program.
+Silvia filters candidates by experience in project management and invites the top students for interviews, managing everything through the platform.
+
+\subsection*{Scenario 7: Giorgio, the academic coordinator}
+Giorgio is responsible for managing internships for his university's students.
+He uses the platform to monitor active internships, ensuring students receive quality experiences.
+Giorgio also resolves complaints filed by students and maintains a record of company performance for future collaboration decisions.
+
+\subsection*{Scenario 8: Valentina, the responsible company manager}
+Valentina represents a company that has received a complaint from a student through the platform.
+She analyzes the issue and resolves it by improving communication and adapting the internship to meet the expectations.
+
+
+\subsection{Domain Class Diagram}\label{subsec:domain-class-diagram}
+The UML class diagram in Figure \ref{fig:classDiagram} describes at high-level the model of S\&C platform.
+Below is a detailed explanation of the main components:
+\subsection*{UML Class Diagram Description}
+\begin{itemize}
+    \item \textbf{User (Abstract)}:
+    \begin{itemize}
+        \item Attributes:
+        \begin{itemize}
+            \item \texttt{userID: String} - Unique identifier for a user.
+            \item \texttt{email: String} - Email address of the user.
+            \item \texttt{name: String} - Name of the user.
+        \end{itemize}
+        \item Relationships:
+        \begin{itemize}
+            \item Extended by \texttt{Student}, \texttt{Company}, and \texttt{University}.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Student}:
+    \begin{itemize}
+        \item Relationships:
+        \begin{itemize}
+            \item Associates with \texttt{CV}.
+            \item Provides \texttt{Feedback}.
+            \item Linked to \texttt{Experience} and \texttt{Skill}.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Company}:
+    \begin{itemize}
+        \item Relationships:
+        \begin{itemize}
+            \item Uploads \texttt{Internship}.
+            \item Interacts with \texttt{Feedback}.
+            \item Engages in \texttt{Contract}.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{University}:
+    \begin{itemize}
+        \item Attributes:
+        \begin{itemize}
+            \item Supervises \texttt{Monitoring}.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{CV}:
+    \begin{itemize}
+        \item Attributes:
+        \begin{itemize}
+            \item \texttt{attitudes: String} - Skills or attributes of the student.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Internship}:
+    \begin{itemize}
+        \item Attributes:
+        \begin{itemize}
+            \item \texttt{description: String} - Description of the internship.
+            \item \texttt{internshipID: Integer} - Unique identifier for the internship.
+            \item \texttt{terms: String} - Terms of the internship.
+            \item \texttt{applicationDomain: String} - Domain of the internship.
+            \item \texttt{tasks: String} - Tasks associated with the internship.
+            \item \texttt{technologies: String} - Technologies involved in the internship.
+        \end{itemize}
+        \item Relationships:
+        \begin{itemize}
+            \item Requires \texttt{Skill} and \texttt{Experience}.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Recommendation}:
+    \begin{itemize}
+        \item Attributes:
+        \begin{itemize}
+            \item \texttt{recID: Integer} - Unique identifier for the recommendation.
+            \item \texttt{statisticalAnalysis: List<>} - Statistical analysis used for recommendations.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Feedback}:
+    \begin{itemize}
+        \item Attributes:
+        \begin{itemize}
+            \item \texttt{feedbackID: Integer} - Unique identifier for the feedback.
+            \item \texttt{description: String} - Content of the feedback.
+        \end{itemize}
+        \item Relationships:
+        \begin{itemize}
+            \item Associated with \texttt{Student}, \texttt{Company}, and \texttt{University}.
+            \item Uses \texttt{typeFeedback} (enumeration: \texttt{SUGGESTION}, \texttt{COMPLAIN}).
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Contract}:
+    \begin{itemize}
+        \item Attributes:
+        \begin{itemize}
+            \item \texttt{contactID: String} - Unique identifier for the contract.
+            \item \texttt{description: String} - Content or details of the contract.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Monitoring}:
+    \begin{itemize}
+        \item Attributes:
+        \begin{itemize}
+            \item \texttt{monitorID: Integer} - Unique identifier for the monitoring process.
+            \item \texttt{description: String} - Description of the monitoring activity.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Skill and Experience}:
+    \begin{itemize}
+        \item Relationships:
+        \begin{itemize}
+            \item Linked to \texttt{Internship} to define requirements for candidates.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{SelectionProcess}:
+    \begin{itemize}
+        \item Attributes:
+        \begin{itemize}
+            \item \texttt{selectionID: Integer} - Unique identifier for the selection process.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Interview}:
+    \begin{itemize}
+        \item Attributes:
+        \begin{itemize}
+            \item \texttt{interviewID: Integer} - Unique identifier for the interview.
+            \item \texttt{date: DateTime} - Scheduled date of the interview.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+The system helps students find internships with companies, guided by recommendations based on CVs and internship requirements.
+Universities monitor the internship process and handle complaints or suggestions.
+The system also manages the selection, the setup of the interview and formalizes successful matches with contracts.
+The relationships between students, companies, and universities are all organized to make the internship process easy to track.
+In order to handle all the services of the platform we decided to define a User class that is a general for all users on the platform.
+Student, Company, and University are specific types of User, so they extend this class to share basic information.
+In particular each students public a CV and they look for internships advertised by companies which offer positions for students.
+Moreover we settled a university entity to monitor the process.
+Universities can receive Feedback (complaints or suggestions) from students and companies and manage these issues.
+All the matching process starts include the recommendation process to match students with internships.
+It uses methods like statistical analysis to suggest suitable internships to students and to notify companies about potential student matches.
+Once a student and company are interested in each other the selection process begins and helps manage interviews and track each stage of the selection.
+The contract represents a formal agreement between a student and a company once they have agreed to an internship.
+S\&C allows students and companies to give feedback on the internship that can be categorized as suggestion or complain.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{UML_class_diagram}
+    \caption{UML Class Diagram.}
+    \label{fig:classDiagram}
+\end{figure}
+
+\subsection{State Diagrams}\label{subsec:state-diagrams}
+We identified the main components of the system that go through different phases and we highlighted four main states.
+
+In the first diagram we highlighted the students' main actions from registration, to uploading a CV, searching for internships, and possibly accepting an offer of interview.
+It could be useful for understanding the lifecycle of a student entity and how it moves through the platform.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{stateDiagram1}
+    \caption{State Diagram 1.}
+    \label{fig:figure1}
+\end{figure}
+
+In the second diagram we showed the internship state diagram including the publishing phase, the students' selection followed by an accepted or denied response.This diagram would help track the progress and status of each internship position.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{stateDiagram2}
+    \caption{State Diagram 2.}
+    \label{fig:figure2}
+\end{figure}
+
+The third diagram focused on the selection process from the start of it, through interview invitations, to the final candidate selection in order to can help visualize the different steps.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{stateDiagram3}
+    \caption{State Diagram 3.}
+    \label{fig:figure3}
+\end{figure}
+
+Finally in the fourth diagram we chose to display the progression of feedback through its lifecycle.
+The Feedback entity is used for collecting opinions, complaints, or suggestions from students and companies.
+The universities are responsible for reviewing the feedbacks.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{stateDiagram4}
+    \caption{State Diagram 4.}
+    \label{fig:figure4}
+\end{figure}
+
+\section{Product Functions}\label{sec:product-functions}
+The platform provides a variety of functionalities to facilitate the matching, selection, and monitoring of internships.
+These are divided into three main categories:
+
+\subsection{Matchmaking between Students and Companies}
+\begin{itemize}
+    \item \textbf{Student Profile Management:} Students can create and manage their profiles, upload CVs, and specify their skills, experiences, and preferences.
+    \item \textbf{Internship Listings:} Companies can post detailed internship opportunities, including tasks, required skills, and benefits.
+    \item \textbf{Recommendation System (Analysis Tool):} The platform analyzes student profiles and internship listings to suggest optimal matches.
+    \item \textbf{Notification System:} Students are notified about suitable internships, and companies are informed about potential candidates.
+    \item \textbf{Search and Filtering:} Students and companies can manually search and filter results based on various criteria, such as technologies, duration, and location.
+\end{itemize}
+
+\subsection{Interview Management}
+\begin{itemize}
+    \item \textbf{Interview Scheduling:} Companies can schedule interviews with candidates directly through the platform.
+\end{itemize}
+
+\subsection{Internship Monitoring and Feedback}
+\begin{itemize}
+    \item \textbf{Internship Tracking:} Universities and companies can monitor internships and track students' progress.
+    \item \textbf{Complaint Handling:} Students and companies can submit complaints, and universities can resolve.
+    \item \textbf{Feedback Collection:} Students and companies can provide feedback on the internship experience.
+    \item \textbf{Dashboard for Universities:} Universities can access a centralized dashboard to monitor internship.
+    \item \textbf{Statistics and Insights:} The platform collects data to provide statistical insights for improving the internship process.
+\end{itemize}
+
+\section{User characteristics}\label{sec:user-characteristics}
+The platform is designed for three primary types of users: students, companies, and universities.
+Each group interacts with the system in specific ways and has distinct characteristics.
+
+\subsection*{Students}
+Students are the primary beneficiaries of the platform.
+They come from diverse academic backgrounds, with varying levels of technical and non-technical skills.
+Students use the platform to upload their CVs, search for internships, and receive recommendations tailored to their profiles.
+
+\subsection*{Companies}
+Companies using the platform range from small startups to large multinational organizations.
+HR managers or recruiters are typically the main users, responsible for posting internships, evaluating candidates, and managing selection processes.
+
+\subsection*{Universities}
+Universities oversee the internship process for their students, ensuring quality experiences and resolving issues when necessary.
+Academic staff or coordinators use the platform to monitor ongoing internships, analyze feedback, and handle complaints.
+
+\section{Assumptions, dependencies and constraints}\label{sec:assumptions-dependencies-and-constraints}
+The properties that hold in the analyzed world will be listed below.
+
+\subsection{Regulatory Policies}
+\label{subsec:regulatory-policies}
+The Students\&Companies platform must comply with the following regulatory policies:
+\begin{itemize}
+    \item \textbf{Data Protection Laws:} The system must adhere to the General Data Protection Regulation (GDPR) to ensure the protection of personal data for students, companies, and universities.
+    \item \textbf{IT Security Standards:} Compliance with recognized standards, such as ISO/IEC 27001, to ensure the security and integrity of information.
+    \item \textbf{Internship Regulations:} Adherence to national and regional laws governing internships, including rights, conditions, and duration.
+    \item \textbf{Accessibility Guidelines:} The platform must meet Web Content Accessibility Guidelines (WCAG 2.1) to support users with disabilities.
+    \item \textbf{University Policies:} Respect for internal rules of participating universities regarding internship monitoring and complaint handling.
+    \item \textbf{Electronic Contract Laws:} Ensuring that electronic agreements between students and companies comply with relevant legislation.
+    \item \textbf{Anti-discrimination Laws:} The system must ensure fairness in recommendations and selection processes, adhering to Equal Employment Opportunity (EEO) regulations.
+\end{itemize}
+
+
+\subsection{Domain Assumption}\label{subsec:domain-assumption}
+\renewcommand{\arraystretch}{1.5}
+\begin{center}
+    \begin{longtable}{|c|p{0.90\textwidth}|}
+        \hline
+        \rowcolor[HTML]{FFF9C4}
+        \textbf{ID} & \textbf{Domain Assumption} \\ \hline
+        \rowcolor[HTML]{FFFFFF}
+        \textbf{D1} & The internet connection works properly \\ \hline
+        \rowcolor[HTML]{F0F0F0}
+        \textbf{D2} & User* have a suitable working device \\ \hline
+        \rowcolor[HTML]{FFFFFF}
+        \textbf{D3} & Students are enrolled in a subscribed university \\ \hline
+        \rowcolor[HTML]{F0F0F0}
+        \textbf{D4} & Universities, students, and companies receive information sent from the system (The network has reliable links) \\ \hline
+        \rowcolor[HTML]{FFFFFF}
+        \textbf{D5} & Students and companies are responsible to conduct the interviews independently \\ \hline
+    \end{longtable}
+\end{center}
+

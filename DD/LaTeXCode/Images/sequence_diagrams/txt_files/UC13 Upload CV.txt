@@ -1,0 +1,51 @@
+frame [UC13] Upload CV
+
+participant "WebAPP" as web
+participant "API Gateway" as api
+participant "AuthenticationService" as mon
+participant "RecommendationEngine" as rec
+participant "DataBase" as db
+participant "AnalysisTool" as anal
+participant "Notification Service" as not
+
+autoactivation
+autonumber
+
+web->api:getProfile(userId)
+  api->mon: getProfile(userId)
+    mon->db: getProfile(userId)
+    mon<--db: user
+  api<--mon: user
+web<--api: user
+
+web->api:uploadCV(cv)
+  api->mon: uploadCV(cv)
+    mon->mon: checkCVcv)
+    deactivateafter mon
+alt valid upload
+    mon->db: uploadCV(cv)
+    mon<--db: ok
+    
+    mon->not: sendNotification(cv, companies)
+    mon<--not: ok
+    
+    api<--mon: ok
+    
+    api->rec: analyzeCV(cv)
+    rec->db: getCV(cv)
+    rec<--db: cv
+    
+    rec->anal: analyzeCV(cv)
+    rec<--anal: new_cv
+    
+    api<--rec: new_cv
+    web<--api: new_cv
+    
+else invalid upload
+    api<--mon: ko
+web<--api: ko
+end
+
+# todo: no error, but just a message
+
+

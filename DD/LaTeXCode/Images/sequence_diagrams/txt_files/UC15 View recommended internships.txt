@@ -1,0 +1,19 @@
+frame [UC15] View recommended internships
+
+participant "WebAPP" as web
+participant "API Gateway" as api
+participant "InternshipMonitoringManager" as mon
+participant "DataBase" as db
+#participant "Notification Service" as not
+
+autoactivation
+autonumber
+
+web->api:get(internship)
+  api->mon: get(internship)
+    mon->db: get(internship)
+    mon<--db: internship
+  api<--mon: internship
+web<--api: internship
+
+

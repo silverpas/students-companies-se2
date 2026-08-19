@@ -1,0 +1,31 @@
+frame [UC17] Apply for internship
+
+participant "WebAPP" as web
+participant "API Gateway" as api
+participant "InternshipMonitoringManager" as mon
+participant "DataBase" as db
+participant "NotificationService" as not
+
+autoactivation
+autonumber
+web->api:getInternship(internshipId)
+  api->mon: getInternship(internshipId)
+    mon->db: getInternship(internshipId)
+    mon<--db: internship
+  api<--mon: internship
+web<--api: internship
+web->api: applyForInternship(internshipId, userId)
+  api->mon: applyForInternship(internshipId, userId)
+    mon->db: applyForInternship(internshipId, userId)
+    mon<--db: ok
+    mon->not: sendNotification(users, message)
+alt notification success
+    mon<--not: ok
+  api<--mon: ok
+web<--api: ok
+else notification error
+    mon<--not: ko
+  api<--mon: ko
+web<--api: ko
+end
+    

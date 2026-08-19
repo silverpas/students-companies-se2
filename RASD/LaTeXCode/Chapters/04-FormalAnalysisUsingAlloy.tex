@@ -1,0 +1,62 @@
+The Alloy chapter focuses on modelling the interaction between a student and a feasible internship. 
+
+The important features implemented represent the selection process: how a student, after a recommendation, can start a selection process and eventually start the internship.
+%\lstinputlisting[language=alloy]{Alloy/RASD.als}
+
+\section{Model}
+    \lstinputlisting[language=alloy]{Alloy/model/model.als}
+
+\newpage
+\section{Predicates}
+    \lstinputlisting[language=alloy]{Alloy/model/predicates.als}
+
+\newpage
+\section{Assertions}
+    \lstinputlisting[language=alloy]{Alloy/assertions/assertions.als}
+
+\newpage
+\section{Examples}
+
+    In this section some basic examples are shown to demonstrate the model structure. In particular, for clarity and simplicity, are considered only cases with one company, one university and one internship.
+    % add active selection example
+    \subsection{Start a new selection process}
+
+        A student enrolled in an university is recommended an internship when he satifies all the requirements for that internship (none in the example).
+
+        As soon as the two parties take contact a selection process is started. 
+        
+        \lstinputlisting[language=alloy]{Alloy/examples/simpleAddSelection.als}
+        \begin{figure}[h]
+            \includegraphics[width=\textwidth]{alloy/simpleAddSelection.png}
+            \caption{A new selection process is started}
+        \end{figure}
+
+    % add active internship example
+    \subsection{Start a new internship}
+
+        After the selection phase has taken place, the internship can start. In this case the internship is no more recommended and becomes unavailable for other students.
+        
+        \lstinputlisting[language=alloy]{Alloy/examples/simpleActiveInternship.als}
+        \begin{figure}[h]
+            \includegraphics[width=\textwidth]{alloy/simpleActiveInternship.png}
+            \caption{A new internship is started}
+        \end{figure}
+    % remove active internship example
+    \subsection{Stop an active internship}
+
+        When the internship ends it becomes available for the other students. The student that already took part in it doesn't see it in the recommended ones, and can't enroll in same again.
+
+        \lstinputlisting[language=alloy]{Alloy/examples/simpleRemoveInternship.als}
+        \begin{figure}[h]
+            \includegraphics[width=\textwidth]{alloy/simpleRemoveInternship.png}
+            \caption{An internship is stopped}
+        \end{figure}
+    % two user one internship
+    \subsection{Two students want the same internship}
+
+        This example shows a case where two different students are partecipating in the selection process for the same internship. At the end only one of them is able to start it, in both cases is no more recommended.
+        \lstinputlisting[language=alloy]{Alloy/examples/multipleStudentSelection.als}
+        \begin{figure}[h]
+            \includegraphics[width=\textwidth]{alloy/multipleStudentSelection.png}
+            \caption{Multiple students want the same internship}
+        \end{figure}

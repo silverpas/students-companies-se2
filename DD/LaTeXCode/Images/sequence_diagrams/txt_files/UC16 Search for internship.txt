@@ -1,0 +1,26 @@
+frame [UC16] Search for internship
+
+participant "WebAPP" as web
+participant "API Gateway" as api
+participant "InternshipMonitoringManager" as mon
+participant "DataBase" as db
+#participant "Notification Service" as not
+
+autoactivation
+autonumber
+alt search for company
+web->api:get(company)
+  api->mon: get(company)
+    mon->db: get(company)
+    mon<--db: company
+  api<--mon: company
+web<--api: company
+else search for position
+web->api:get(internship)
+  api->mon: get(internship)
+    mon->db: get(internship)
+    mon<--db: internship
+  api<--mon: internship
+web<--api: internship
+end
+

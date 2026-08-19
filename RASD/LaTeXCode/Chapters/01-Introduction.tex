@@ -1,0 +1,229 @@
+The Requirements Analysis and Specification Document (RASD) is a key reference for planning and estimating the size, cost, and timeline of a project.
+It explains what the system is meant to achieve, covering its scope, objectives, and goals.
+Along with outlining non-functional requirements, it breaks down functional requirements using use cases, diagrams, and class models.
+The RASD also helps with testing, verification, and validation, ensuring the system works as intended.
+Moreover, it keeps track of changes and the progress of the system as it evolves over time.
+
+\section{Purpose}\label{sec:purpose}
+
+This document focuses on the Requirements Analysis and Specification Document (RASD) for the Students\&Companies (S\&C) platform.
+It contains a detailed description of the platform's primary goals, domain, and relevant models used to represent the domain.
+It includes an analysis of fundamental scenarios and their respective use cases, with a list of functional and non-functional requirements that define the development of the software.
+
+Moreover, this document examines interface requirements, performance attributes and constraints that are relevant regarding the platform's user experience.
+It also includes a formal Analysis using Alloy which consists in a brief presentation of the main objectives driving the formal modeling activity and the results of the checks performed on meaningful assertions.
+For better context, the document includes a history of its development, references, and an explanation of its structure.
+
+The purpose of this document is to guide the creation of the Students\&Companies software, a web application used to match students with companies offering internship opportunities.
+\\\\\\\\
+
+%chiedi PER I PACKAGE
+\subsection{Goals}\label{subsec:goals}
+\renewcommand{\arraystretch}{1.5} % Adjust row height for better readability
+% goal counter
+\newcounter{g}
+\setcounter{g}{1}
+\newcommand{\cg}{\theg\stepcounter{g}}
+\begin{center}
+    \begin{longtable}{|c|p{0.90\textwidth}|}
+        \hline
+        \rowcolor[HTML]{E7E0FA}
+        \textbf{ID} & \textbf{Description} \\ \hline
+        \rowcolor[HTML]{FFFFFF}
+        \textbf{G\cg} & Allow students and companies to provide information (internships, CVs) \\ \hline
+        \rowcolor[HTML]{F0F0F0}
+        \textbf{G\cg} & Allow companies to advertise internships \\ \hline
+        \rowcolor[HTML]{FFFFFF}
+        \textbf{G\cg} & Allow students to search for internships \\ \hline
+        \rowcolor[HTML]{F0F0F0}
+        \textbf{G\cg} & Allow students and companies to deal with the recommendation process\\ \hline
+        \rowcolor[HTML]{FFFFFF}
+        \textbf{G\cg} & Allow the management of interview and selections \\ \hline
+        \rowcolor[HTML]{F0F0F0}
+        \textbf{G\cg} & Allow the Analysis Tool to collect various kinds of information regarding the internships \\ \hline
+        \rowcolor[HTML]{FFFFFF}
+        \textbf{G\cg} & Allow suggestions to students and companies regarding how to make submissions \\ \hline
+        \rowcolor[HTML]{F0F0F0}
+        \textbf{G\cg} & Allow students and companies to establish a contact \\ \hline
+        \rowcolor[HTML]{FFFFFF}
+        \textbf{G\cg} & Allow students and companies to perform the selection process \\ \hline
+        \rowcolor[HTML]{F0F0F0}
+        \textbf{G\cg} & Allow students and companies to provide feedbacks \\ \hline
+        \rowcolor[HTML]{FFFFFF}
+        \textbf{G\cg} & Allow universities to monitor internships (complaints) \\ \hline
+    \end{longtable}
+\end{center}
+
+
+\section{Scope}\label{sec:scope}
+The Students\&Companies platform is designed to ease the matching process between students looking for internships and companies offering them.
+S\&C matches students with internships based on skills, experience, and career goals as outlined in students' CVs and company project descriptions.
+The platform offers to the students to look proactively for internship but also allows notification mechanisms to alert students when relevant internships become available.
+Likewise, companies are notified when a student’s profile aligns with their internship descriptions.
+This system employs mechanisms of various level of sophistication like keyword matching and advanced analyses considering students and internship characteristics via external Analysis Tool.
+
+Once an initial contact has been established, the platform supports the selection process, allowing companies to conduct interviews, manage questionnaires, and assess candidates’ compatibility with the internship.
+
+It supports both students and companies by suggesting optimizations for student CVs and company project descriptions to make their submissions more appealing for their counterparts.
+
+S\&C provides interested parties with mechanisms to track internship progress and report any issues.
+While universities, after authentication on the platform could monitor these reports to ensure the performance of their students.
+
+The platform ensures secure authentication for companies, students and universities that are affiliated with S\&C.
+
+\subsection{World phenomena}\label{subsec:world-phenomena}
+\renewcommand{\arraystretch}{1.5} % Adjust row height for better readability
+\begin{center}
+    \begin{longtable}{|c|p{0.90\textwidth}|}
+        \hline
+        \rowcolor[HTML]{D6EAF8} % Light beige
+        \textbf{ID} & \textbf{Description} \\ \hline
+        \rowcolor[HTML]{FFFFFF} % Light beige
+        \textbf{W1} & Students fulfill their CVs \\ \hline
+        \rowcolor[HTML]{F0F0F0} % White
+        \textbf{W2} & Companies open an internship position \\ \hline
+        \rowcolor[HTML]{FFFFFF} % Light beige
+        \textbf{W3} & Universities decide to terminate an internship / Universities handle complaints \\ \hline
+        \rowcolor[HTML]{F0F0F0} % White
+        \textbf{W4} & Students and companies conduct external interviews  \\ \hline
+    \end{longtable}
+\end{center}
+
+\subsection{Shared phenomena}\label{subsec:shared-phenomena}
+\subsubsection{World Controlled}
+Phenomena controlled by the world and observed by the machine
+\renewcommand{\arraystretch}{1.5} % Adjust row height for better readability
+\begin{center}
+    \begin{longtable}{|c|p{0.90\textwidth}|}
+        \hline
+        \rowcolor[HTML]{FFE5B4}
+        \textbf{ID} & \textbf{Description} \\ \hline
+        \rowcolor[HTML]{FFFFFF} % Light beige
+        \textbf{S1} & Users signup/login \\ \hline
+        \rowcolor[HTML]{F0F0F0} % White
+        \textbf{S2} & Students upload their CVs \\ \hline
+        \rowcolor[HTML]{FFFFFF} % Light beige
+        \textbf{S3} & Companies upload the internship position \\ \hline
+        \rowcolor[HTML]{F0F0F0} % White
+        \textbf{S4} & Students proactively look for internships \\ \hline
+        \rowcolor[HTML]{FFFFFF} % Light beige
+        \textbf{S5} & Matched students and companies accept/reject offers/applications \\ \hline
+        \rowcolor[HTML]{F0F0F0} % White
+        \textbf{S6} & Companies setup the interview through the platform \\ \hline
+        \rowcolor[HTML]{FFFFFF} % Light beige
+        \textbf{S7} & Companies collect answers from interviewed students \\ \hline
+        \rowcolor[HTML]{F0F0F0} % White
+        \textbf{S8} & Companies file a complaint \\ \hline
+        \rowcolor[HTML]{FFFFFF} % Light beige
+        \textbf{S9} & Students file a complaint \\ \hline
+    \end{longtable}
+\end{center}
+
+
+
+\subsubsection{Machine Controlled}
+Phenomena controlled by the machine and observed by the world
+\renewcommand{\arraystretch}{1.5} % Adjust row height for better readability
+\begin{center}
+    \begin{longtable}{|c|p{0.90\textwidth}|}
+        \hline
+        \rowcolor[HTML]{BDFCC9}
+        \textbf{ID} & \textbf{Description} \\ \hline
+        \rowcolor[HTML]{FFFFFF} % White
+        \textbf{S10} & The system sends complaints to universities \\ \hline
+        \rowcolor[HTML]{F0F0F0} % Light beige
+        \textbf{S11} & The system asks students to provide feedback and suggestions to feed statistical analysis \\ \hline
+        \rowcolor[HTML]{FFFFFF} % White
+        \textbf{S12} & The system asks companies to provide feedback and suggestions \\ \hline
+        \rowcolor[HTML]{F0F0F0} % Light beige
+        \textbf{S13} & The system informs students when a position becomes available \\ \hline
+        \rowcolor[HTML]{FFFFFF} % White
+        \textbf{S14} & The system informs companies of the availability of student CVs corresponding to their needs \\ \hline
+        \rowcolor[HTML]{F0F0F0} % Light beige
+        \textbf{S15} & The system helps manage the interviews \\ \hline
+        \rowcolor[HTML]{FFFFFF} % White
+        \textbf{S16} & The system finalizes the selections \\ \hline
+        \rowcolor[HTML]{F0F0F0} % Light beige
+        \textbf{S17} & The system provides suggestions regarding the submissions of companies and students \\ \hline
+        \rowcolor[HTML]{FFFFFF} % White
+        \textbf{S18} & The system provides interested parties with mechanisms to track and monitor the matchmaking process \\ \hline
+        \rowcolor[HTML]{F0F0F0} % Light beige
+        \textbf{S19} & The system notifies the appropriate students' universities of complaints to handle \\ \hline
+    \end{longtable}
+\end{center}
+
+\section{Glossary}\label{sec:definitions-acronyms-abbreviations}
+\subsection{Definitions}\label{subsec:definition}
+\begin{itemize}
+    \item \textbf{Student:} A registered user on the S\&C platform who is searching for internship opportunities and uploads their CV.
+    \item \textbf{Company:} An entity registered on the platform that publishes internship listings and selects candidates.
+    \item \textbf{University:} An organization that supervises internships and handles complaints.
+    \item \textbf{CV:} Curriculum Vitae, a document summarizing a student's experiences, skills, and qualifications.
+    \item \textbf{Internship:} A time-limited work opportunity offered by a company to train students on specific projects.
+    \item \textbf{Recommendation Engine:} A system that analyzes student profiles and internship listings to suggest relevant matches.
+    \item \textbf{Complaint:} A report submitted by a student or a company to address an issue related to an internship.
+    \item \textbf{Feedback:} Retrospective information provided by students and companies to evaluate the internship experience.
+    \item \textbf{User:} Student and companies
+    \item \textbf{User*:} Student, companies and universities
+    \item \textbf{Guest:} Student, companies and universities not yet registered
+\end{itemize}
+
+\subsection{Acronyms}\label{subsec:acronyms}
+\begin{itemize}
+    \item \textbf{S\&C}: Students\&Companies
+    \item \textbf{CV}: Curriculum Vitae
+    \item \textbf{API}: Application Programming Interface
+    \item \textbf{GDPR}: General Data Protection Regulation
+    \item \textbf{UML}: Unified Modeling Language
+    \item \textbf{RASD}: Requirements Analysis and Specification Document
+    \item \textbf{DD}: Design Document
+    \item \textbf{HR}: Human Resource
+\end{itemize}
+
+\subsection{Abbreviations}\label{subsec:abbreviations}
+\begin{itemize}
+    \item \textbf{e.g.}: Example (\textit{exempli gratia})
+    \item \textbf{etc.}: And so on (\textit{et cetera})
+    \item \textbf{i.e.}: That is (\textit{id est})
+    \item \textbf{vs.}: Against (\textit{versus})
+    \item \textbf{w.r.t.}: With respect to (\textit{with respect to})
+    \item \textbf{ID}: Unique Identifier
+    \item \textbf{G}: Goal
+    \item \textbf{WP}: World Phenomena
+    \item \textbf{SP}: Shared Phenomena
+    \item \textbf{R}: Requirement
+\end{itemize}
+
+\section{Revision History}\label{sec:revision-history}
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|c|c|p{0.6\textwidth}|}
+        \hline
+        \rowcolor[HTML]{5C8A99}
+        \textbf{Version} & \textbf{Date} & \textbf{Description} \\ \hline
+        1.0              & 30/10/2024    & Initial version of the Requirements Analysis and Specification Document. \\ \hline
+    \end{tabular}
+    \caption{Revision History}
+\end{table}
+
+\section{Reference Documents}\label{sec:reference-documents}
+\begin{itemize}
+    \item Assignment RDD AY 2024-2025: Problem statement and project details.
+    \item IEEE Std 830-1998: IEEE Recommended Practice for Software Requirements Specifications.
+    \item GDPR (General Data Protection Regulation): European regulation for data protection and privacy.
+    \item S\&C Design Document: To be developed in the second phase of the project.
+    \item UML 2.0 Standard: Unified Modeling Language for diagrams and models.
+    \item Software Engineering 2 Course Materials: Lectures and supplementary notes.
+\end{itemize}
+
+This document is organized as follows:
+\begin{itemize}
+    \item \textbf{Section 1 - Introduction:} Provides an overview of the project, its scope, goals, and relevant background information. It also includes definitions, acronyms, abbreviations, reference documents, and a description of the document structure.
+    \item \textbf{Section 2 - Overall Description:} Describes the product's context, key functionalities, user characteristics, and assumptions, dependencies, and constraints. It includes domain models such as class and state diagrams.
+    \item \textbf{Section 3 - Specific Requirements:} Details the external interface requirements, functional requirements (use case and sequence diagrams), performance requirements, and design constraints. This section also covers attributes such as reliability, availability, and security.
+    \item \textbf{Section 4 - Formal Analysis Using Alloy:} Explains the formal modeling approach, objectives, and results obtained through Alloy validation, including example worlds and assertion checks.
+    \item \textbf{Section 5 - Effort Spent:} Summarizes the amount of time each team member has contributed to the creation of this document.
+    \item \textbf{Section 6 - References:} Lists all documents, standards, and resources referenced during the development of this document.
+\end{itemize}
+

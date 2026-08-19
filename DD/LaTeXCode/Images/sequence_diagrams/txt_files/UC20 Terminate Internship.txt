@@ -1,0 +1,47 @@
+frame [UC20] Terminate Internship
+# the university terminates the internship
+
+participant "WebAPP" as web
+participant "API Gateway" as api
+participant "InternshipMonitoringManager" as mon
+participant "DataBase" as db
+participant "NotificationService" as not
+
+autoactivation on
+autonumber on
+# view the internship
+web->api:getInternship(internshipId)
+  api->mon: getInternship(internshipId)
+    mon->db: getInternship(internshipId)
+alt Internship found
+    mon<--db: internship
+  api<--mon: internship
+web<--api: internship
+else Internship not found
+    mon<--db: ko
+  api<--mon: ko
+web<--api: ko
+end
+# delete the selected internship
+web->api: deleteInternship(internshipId)
+  api->mon: deleteInternship(internshipId)
+    mon->mon: checkDeleteRequest(request)
+    space 
+    deactivate mon
+alt request is valid
+      mon->db: deleteInternship(internshipId)
+  alt Internship found
+      mon<--db: ok
+      mon->not: sendNotification(user, message)
+      mon<--not: ok
+    api<--mon: ok
+  web<--api: ok
+  else Internship not found
+      mon<--db: ko
+    api<--mon: ko
+  web<--api: ko
+  end
+else request is invalid
+    api<--mon: ko
+  web<--api: ko
+end

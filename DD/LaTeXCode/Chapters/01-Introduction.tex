@@ -1,0 +1,103 @@
+This Design Document (DD) provides a detailed description of the technical and architectural design decisions for the Students\&Companies (S\&C) platform.
+It builds upon the requirements outlined in the Requirements Analysis and Specification Document (RASD),
+translating them into a comprehensive design framework for implementation, integration, and testing.
+This document specifies the architecture, system components, and data flows that implement required functionalities while ensuring scalability, security, and compliance with non-functional requirements such as reliability and maintainability.
+
+\section{Purpose}\label{sec:purpose}
+The purpose of this document is to provide the foundational design and architecture required to implement the S\&C platform. It ensures that the platform:
+\begin{itemize}
+    \item Meets the functional and non-functional requirements outlined in the RASD.
+    \item Supports secure and efficient interactions among students, companies, and universities.
+    \item Integrates with external tools such as SMTP providers for notifications and statistical analysis tools for evaluating internship processes.
+    \item Provides a robust foundation for testing, verification, and validation of the system.
+\end{itemize}
+
+\section{Scope}\label{sec:scope}
+The Students\&Companies platform streamlines the internship process by connecting students with companies based on skills, experiences, and goals.
+Its main features include:
+\begin{itemize}
+    \item Tools for students to search for internships and for companies to advertise opportunities.
+    \item A recommendation engine to match students’ CVs with companies’ internship requirements.
+    \item Management of interviews, questionnaires, and candidate evaluations.
+    \item Feedback mechanisms for improving internship applications and postings.
+    \item Monitoring tools for universities to track internship progress and handle complaints.
+    \item Notifications for students and companies about relevant matches and updates.
+\end{itemize}
+
+The system incorporates a secure authentication mechanism for all user types (Company, Student, University)
+and ensures the accuracy of user-provided data.
+It employs a three-tier architecture to separate the user interface, application logic, and data storage,
+allowing for scalability and maintainability.
+
+\section{Glossary}\label{sec:glossary}
+
+\subsection{Definitions}\label{subsec:definitions}
+\begin{itemize}
+    \item \textbf{Student:} A user* registered on the platform to search for internships and submit their CVs.
+    \item \textbf{Company:} A user* registered on the platform to post internship opportunities and select candidates.
+    \item \textbf{University:} A user* with the authority to monitor internships and handle complaints.
+    \item \textbf{CV:} A document summarizing a student’s skills, experiences, and qualifications.
+    \item \textbf{Internship:} A professional experience offered by a company to train students in specific domains.
+    \item \textbf{Recommendation Engine:} A system that matches students and internships based on predefined criteria such as skills and experience.
+    \item \textbf{Feedback:} Retrospective information provided by users* to evaluate internships and enhance the platform.
+    \item \textbf{Complaint:} A report submitted by students, companies, or universities to address issues related to internships.
+    \item \textbf{User:} Includes authenticated students and companies.
+    \item \textbf{User*:} Includes authenticated students, companies and universities.
+    \item \textbf{Guest:} Unauthenticated students, companies, or universities accessing limited features of the platform.
+\end{itemize}
+
+\subsection{Acronyms}\label{subsec:acronyms}
+\begin{itemize}
+    \item \textbf{S\&C}: Students\&Companies
+    \item \textbf{RASD}: Requirements Analysis and Specification Document
+    \item \textbf{DD}: Design Document
+    \item \textbf{CV}: Curriculum Vitae
+    \item \textbf{SMTP}: Simple Mail Transfer Protocol
+    \item \textbf{GDPR}: General Data Protection Regulation
+    \item \textbf{API}: Application Programming Interface
+\end{itemize}
+
+\subsection{Abbreviations}\label{subsec:abbreviations}
+\begin{itemize}
+    \item \textbf{e.g.}: Example (\textit{exempli gratia})
+    \item \textbf{i.e.}: That is (\textit{id est})
+    \item \textbf{etc.}: And so on (\textit{et cetera})
+    \item \textbf{vs.}: Against (\textit{versus})
+    \item \textbf{w.r.t.}: With respect to
+\end{itemize}
+
+\section{Revision History}\label{sec:revision-history}
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|c|c|p{0.6\textwidth}|}
+        \hline
+        \rowcolor[HTML]{5C8A99}
+        \textbf{Version} & \textbf{Date} & \textbf{Description} \\ \hline
+        1.0              & 11/12/2024    & Initial version of the Design Document. \\ \hline
+    \end{tabular}
+    \caption{Revision History}
+\end{table}
+
+\section{Reference Documents}\label{sec:reference-documents}
+\begin{itemize}
+    \item Assignment RDD AY 2024-2025: Problem statement and project description.
+    \item RASD: Requirements Analysis and Specification Document for the S\&C platform.
+    \item IEEE Std 830-1998: IEEE Recommended Practice for Software Requirements Specifications.
+    \item GDPR: General Data Protection Regulation for data privacy compliance.
+    \item UML 2.0: Unified Modeling Language standards for diagrams and models.
+    \item Software Engineering 2 Course Materials: Lectures and resources from the course.
+\end{itemize}
+
+\section{Document Structure}\label{sec:document-structure}
+This document is structured as follows:
+\begin{enumerate}
+    \item \textbf{Introduction:} Overview of the document's purpose, scope, glossary, revision history, and references.
+    \item \textbf{Architectural Design:} High-level system architecture, including component diagrams and deployment diagrams.
+    \item \textbf{Detailed Design:} Comprehensive design specifications for each system component.
+    \item \textbf{User Interface Design:} Description and wireframes for the platform’s user interface.
+    \item \textbf{Requirements Traceability:} Mapping of requirements from the RASD to system components.
+    \item \textbf{Implementation, Integration and Testing:} Description of the implementation approach and testing strategies.
+    \item \textbf{Effort Spent:} Summary of contributions from each team member.
+    \item \textbf{References:} List of all reference materials used during the project.
+\end{enumerate}

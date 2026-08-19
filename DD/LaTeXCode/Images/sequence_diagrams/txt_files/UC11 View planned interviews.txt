@@ -1,0 +1,18 @@
+frame [UC11] View planned interviews
+
+participant "WebAPP" as web
+participant "API Gateway" as api
+participant "AuthenticationService" as mon
+participant "DataBase" as db
+#participant "AnalysisTool" as anal
+#articipant "RecommendationService" as rec
+#participant "Notification Service" as not
+
+autoactivation
+autonumber
+web->api: getInterviews(userId)
+  api->mon: getInterviews(userId)
+    mon->db: getInterviews(userId)
+    mon<--db: interviews
+  api<--mon: interviews
+web<--api: interviews
